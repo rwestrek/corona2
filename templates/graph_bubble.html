@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Top 20 countries globally
+{% endblock %}
+
+{% block main %}
+
+
+<body>
+
+	<canvas id="bubble-chart" width="800" height="600"></canvas>
+
+<script>
+	new Chart(document.getElementById("bubble-chart"), {
+		type: 'bubble',
+		data: {
+		  datasets: [
+			{% for country in countries %}
+			{
+			  label: ['{{ country.Name }}'],
+			  backgroundColor: "{{ country.Color }}",
+			  borderColor: "rgba(60,186,159,1)",
+			  data: [{
+				x: {{ country.TestsOneMLN }},
+				y: {{ country.CasesOneMLN }},
+				r: {{ country.DeathsOneMLN }}/10
+			  }]
+			},
+            {% endfor %}
+		  ]
+		},
+		options: {
+		  title: {
+			display: true,
+			text: 'Number of Deaths per 100,000'
+		  }, scales: {
+			yAxes: [{ 
+			  scaleLabel: {
+				display: true,
+				labelString: "Cases / One Million"
+			  }
+			}],
+			xAxes: [{ 
+			  scaleLabel: {
+				display: true,
+				labelString: "Tests / One Million"
+			  }
+			}]
+		  }
+		}
+	});
+</script>
+</body>
+{% endblock %}
+
+
